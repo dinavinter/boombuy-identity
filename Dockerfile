@@ -1,26 +1,16 @@
-FROM mcr.microsoft.com/dotnet/sdk:5.0 AS base
+FROM mcr.microsoft.com/dotnet/core/sdk:5.0 AS build-env
 WORKDIR /app
-EXPOSE 80
-EXPOSE 443
 
-FROM node:10-alpine as build-node
-WORKDIR /ClientApp
-COPY ClientApp/package.json .
-COPY ClientApp/package-lock.json .
-RUN npm install
-COPY ClientApp/ . 
-RUN npm run build 
- 
-FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
-COPY ["BoomBuy.Identity.csproj", "BoomBuy.Identity/"]
-RUN dotnet restore "BoomBuy.Identity.csproj"
-COPY . .
-WORKDIR "."
-RUN dotnet build "BoomBuy.Identity" -c Release -o /app
+# Copy csproj and restore as distinct layers
+COPY *.csproj ./
+RUN dotnet restore
 
-FROM build AS publish
-RUN dotnet publish "BoomBuy.Identity" -c Release -o /app
-FROM base AS final
+# Copy everything else and build
+COPY . ./
+RUN dotnet publish -c Release -o out
+
+# Build runtime image
+FROM mcr.microsoft.com/dotnet/core/aspnet:5.0
 WORKDIR /app
 COPY --from=build-env /app/out .
 CMD dotnet BoomBuy.Identity.dll
