@@ -1,4 +1,9 @@
+FROM node:12-alpine as node_base
+RUN echo "NODE Version:" && node --version
+RUN echo "NPM Version:" && npm --version
+
 FROM mcr.microsoft.com/dotnet/core/sdk:5.0 AS build-env
+COPY --from=node_base . .
 WORKDIR /app
 
 # Copy csproj and restore as distinct layers
