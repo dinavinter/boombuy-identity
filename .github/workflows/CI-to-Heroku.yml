@@ -1,0 +1,28 @@
+name: CI-to-Heroku 
+
+on:
+
+  push:
+
+    branches: [ main ]
+ 
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+ 
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v2 
+         
+      -
+        name: Build And Publish to heroku
+        uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: "boombuy-identity"
+          heroku_email: "dina.vinter@gmail.com"
+          usedocker: true
