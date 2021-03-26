@@ -1,7 +1,7 @@
 # Pull down an image from Docker Hub that includes the .NET core SDK: 
 # https://hub.docker.com/_/microsoft-dotnet-core-sdk
 # This is so we have all the tools necessary to compile the app.
-FROM mcr.microsoft.com/dotnet/core/sdk:5.0-buster AS build
+FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS build
 
 # Fetch and install Node 10. Make sure to include the --yes parameter 
 # to automatically accept prompts during install, or it'll fail.
@@ -24,7 +24,7 @@ RUN dotnet publish "BoomBuy.Identity.csproj" -c Release -o /app/publish
 # https://hub.docker.com/_/microsoft-dotnet-core-aspnet/
 # We don't need the SDK anymore, so this will produce a lighter-weight image
 # that can still run the app.
-FROM mcr.microsoft.com/dotnet/core/aspnet:5.0-buster-slim
+FROM mcr.microsoft.com/dotnet/aspnet:5.0
 
 # Expose port 80 to your local machine so you can access the app.
 EXPOSE 80
