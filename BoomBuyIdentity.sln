@@ -6,7 +6,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".sln", ".sln", "{9F6CCD45-B
 ProjectSection(SolutionItems) = preProject
 	.dockerignore = .dockerignore
 	.gitignore = .gitignore
-	Dockerfile = Dockerfile
 EndProjectSection
 EndProject
 Global
