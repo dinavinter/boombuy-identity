@@ -4,15 +4,15 @@ EXPOSE 80
 EXPOSE 443
 FROM node:10-alpine as build-node
 WORKDIR /ClientApp
-COPY BoomBuy.Identity/ClientApp/package.json .
-COPY BoomBuy.Identity/ClientApp/package-lock.json .
+COPY ClientApp/package.json .
+COPY ClientApp/package-lock.json .
 RUN npm install
-COPY BoomBuy.Identity/ClientApp/ . 
+COPY ClientApp/ . 
 RUN npm run build  
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 ENV BuildingDocker true
 WORKDIR /src
-COPY ["BoomBuy.Identity.csproj", "testspa/"]
+COPY ["BoomBuy.Identity.csproj", "BoomBuy.Identity/"]
 RUN dotnet restore "BoomBuy.Identity.csproj"
 COPY . .
 WORKDIR "."
