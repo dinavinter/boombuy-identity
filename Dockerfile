@@ -1,4 +1,4 @@
-FROM microsoft/dotnet:5.0-aspnetcore-runtime AS base
+FROM mcr.microsoft.com/dotnet/sdk:5.0 AS base
 WORKDIR /app
 EXPOSE 80
 EXPOSE 443
@@ -9,7 +9,7 @@ COPY BoomBuy.Identity/ClientApp/package-lock.json .
 RUN npm install
 COPY BoomBuy.Identity/ClientApp/ . 
 RUN npm run build  
-FROM microsoft/dotnet:5.0-sdk AS build
+FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 ENV BuildingDocker true
 WORKDIR /src
 COPY ["BoomBuy.Identity.csproj", "testspa/"]
